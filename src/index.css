@@ -1,0 +1,708 @@
+:root {
+  --ink: #111111;
+  --paper: #ffffff;
+  --paper-soft: #f4f4f2;
+  --gray: #7a7a7a;
+  --accent: #111111;
+  --danger: #d64545;
+  --radius: 14px;
+  font-family: 'Kalam', 'Comic Sans MS', cursive, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html, body, #root {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  background:
+    radial-gradient(var(--ink) 1px, transparent 1.4px) 0 0 / 18px 18px,
+    var(--paper-soft);
+  color: var(--ink);
+}
+
+button, input, select {
+  font-family: inherit;
+}
+
+.muted-text {
+  color: var(--gray);
+  font-size: 0.85rem;
+}
+
+/* ---------- Elementos base "cartoon" ---------- */
+
+.toon-panel {
+  background: var(--paper);
+  border: 3px solid var(--ink);
+  border-radius: var(--radius);
+  box-shadow: 6px 6px 0 var(--ink);
+}
+
+.toon-btn {
+  background: var(--paper);
+  border: 3px solid var(--ink);
+  border-radius: 10px;
+  padding: 8px 14px;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 3px 3px 0 var(--ink);
+  transition: transform 0.08s ease;
+  color: var(--ink);
+}
+
+.toon-btn:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 5px 5px 0 var(--ink);
+}
+
+.toon-btn:active {
+  transform: translate(1px, 1px);
+  box-shadow: 1px 1px 0 var(--ink);
+}
+
+.toon-btn.primary {
+  background: var(--ink);
+  color: var(--paper);
+}
+
+.toon-btn.small {
+  padding: 4px 10px;
+  font-size: 0.8rem;
+}
+
+.toon-btn.round {
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+  font-size: 1.3rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+}
+
+.toon-btn.round.off,
+.toon-btn.round.leave {
+  background: var(--ink);
+  color: var(--paper);
+}
+
+.toon-btn.round.leave {
+  background: var(--danger);
+  border-color: var(--ink);
+}
+
+.toon-btn.round.on {
+  background: repeating-linear-gradient(45deg, var(--paper), var(--paper) 6px, #e8e8e8 6px, #e8e8e8 12px);
+}
+
+.big-btn {
+  width: 100%;
+  font-size: 1.05rem;
+  padding: 14px;
+}
+
+.toon-input {
+  border: 3px solid var(--ink);
+  border-radius: 10px;
+  padding: 8px 12px;
+  background: var(--paper);
+  font-size: 0.95rem;
+  width: 100%;
+}
+
+.toon-input:focus {
+  outline: 3px dashed var(--ink);
+  outline-offset: 1px;
+}
+
+.toon-range {
+  width: 100%;
+  accent-color: var(--ink);
+}
+
+.link-btn {
+  background: none;
+  border: none;
+  text-decoration: underline;
+  cursor: pointer;
+  font-weight: 700;
+  color: var(--ink);
+  padding: 4px;
+}
+
+.chip-btn {
+  border: 2px solid var(--ink);
+  border-radius: 20px;
+  background: var(--paper);
+  padding: 4px 12px;
+  cursor: pointer;
+  font-weight: 700;
+}
+
+/* ---------- Avatar ---------- */
+
+.avatar {
+  border-radius: 50%;
+  border: 3px solid var(--ink);
+  object-fit: cover;
+  background: var(--paper);
+  filter: grayscale(1) contrast(1.15);
+  flex-shrink: 0;
+}
+
+.avatar-fallback {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--ink);
+  color: var(--paper);
+  font-weight: 700;
+}
+
+.avatar-picker {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* ---------- Home ---------- */
+
+.home-page {
+  min-height: 100%;
+  padding: 32px 20px 60px;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.home-hero {
+  text-align: center;
+  margin-bottom: 28px;
+}
+
+.app-title {
+  font-family: 'Permanent Marker', cursive;
+  font-size: 3rem;
+  margin: 0;
+  text-shadow: 4px 4px 0 rgba(0,0,0,0.15);
+}
+
+.app-subtitle {
+  color: var(--gray);
+  font-size: 1.05rem;
+}
+
+.home-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+}
+
+@media (max-width: 760px) {
+  .home-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.home-card {
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.home-card h3 {
+  margin: 0 0 6px;
+  font-family: 'Permanent Marker', cursive;
+  font-weight: normal;
+}
+
+.settings-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-weight: 700;
+  font-size: 0.9rem;
+}
+
+.home-card-links {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  justify-content: space-between;
+  margin-top: 4px;
+}
+
+.profile-box {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.form-error {
+  color: var(--danger);
+  font-weight: 700;
+  font-size: 0.85rem;
+}
+
+.divider {
+  text-align: center;
+  color: var(--gray);
+  position: relative;
+  margin: 6px 0;
+}
+
+.join-form {
+  display: flex;
+  gap: 8px;
+}
+
+.recent-rooms {
+  margin-top: 8px;
+}
+
+.recent-rooms-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 6px;
+}
+
+/* ---------- Room ---------- */
+
+.room-page {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.room-top-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 20px;
+  border-bottom: 3px solid var(--ink);
+  background: var(--paper);
+}
+
+.room-code-box {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.room-code {
+  font-family: 'Permanent Marker', cursive;
+  font-size: 1.2rem;
+  letter-spacing: 2px;
+}
+
+.copy-feedback {
+  font-size: 0.8rem;
+  color: var(--gray);
+}
+
+.room-participants-count {
+  font-weight: 700;
+}
+
+.room-main {
+  flex: 1;
+  display: flex;
+  overflow: hidden;
+}
+
+.video-area {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 16px;
+  overflow-y: auto;
+  gap: 12px;
+}
+
+.video-grid {
+  display: grid;
+  gap: 12px;
+  flex: 1;
+  grid-template-columns: repeat(2, 1fr);
+  align-content: start;
+}
+
+.grid-count-1 { grid-template-columns: 1fr; }
+.grid-count-2, .grid-count-3, .grid-count-4 { grid-template-columns: repeat(2, 1fr); }
+.grid-count-5, .grid-count-6 { grid-template-columns: repeat(3, 1fr); }
+.grid-count-7, .grid-count-8, .grid-count-9 { grid-template-columns: repeat(3, 1fr); }
+
+.video-tile {
+  position: relative;
+  background: var(--ink);
+  border: 3px solid var(--ink);
+  border-radius: var(--radius);
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+  box-shadow: 4px 4px 0 rgba(0,0,0,0.25);
+}
+
+.video-tile.speaking {
+  border-color: var(--ink);
+  box-shadow: 0 0 0 4px var(--paper), 0 0 0 8px var(--ink);
+}
+
+.video-tile.focused {
+  aspect-ratio: 16 / 9;
+}
+
+.video-tile.screen-tile {
+  background: #222;
+}
+
+.video-el {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: grayscale(1) contrast(1.1);
+  display: block;
+}
+
+.video-el.screen-video {
+  object-fit: contain;
+  filter: grayscale(0.6) contrast(1.05);
+  background: #000;
+}
+
+.video-placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: repeating-linear-gradient(135deg, #2b2b2b, #2b2b2b 10px, #333 10px, #333 20px);
+}
+
+.tile-label {
+  position: absolute;
+  left: 8px;
+  bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--paper);
+  border: 2px solid var(--ink);
+  border-radius: 20px;
+  padding: 2px 10px 2px 2px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  max-width: calc(100% - 16px);
+}
+
+.tile-name {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.tile-badge {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  background: var(--paper);
+  border: 2px solid var(--ink);
+  border-radius: 8px;
+  padding: 1px 8px;
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.tile-mic-off {
+  margin-left: 2px;
+}
+
+.tile-maximize-btn {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 30px;
+  height: 30px;
+  padding: 0;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  opacity: 0.85;
+}
+
+.focused-layout {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  flex: 1;
+}
+
+.focused-layout .video-tile.focused {
+  flex: 1;
+}
+
+.focused-strip {
+  display: flex;
+  gap: 10px;
+  overflow-x: auto;
+  padding-bottom: 4px;
+}
+
+.focused-strip .video-tile {
+  width: 160px;
+  min-width: 160px;
+  aspect-ratio: 16/10;
+}
+
+/* ---------- Chat ---------- */
+
+.chat-panel {
+  width: 320px;
+  min-width: 320px;
+  margin: 16px 16px 16px 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.chat-panel.panel-hidden {
+  display: none;
+}
+
+.chat-header {
+  padding: 12px 14px;
+  border-bottom: 3px solid var(--ink);
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.chat-hint {
+  font-size: 0.72rem;
+  color: var(--gray);
+}
+
+.chat-messages {
+  flex: 1;
+  overflow-y: auto;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.chat-message {
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+}
+
+.chat-message.own {
+  flex-direction: row-reverse;
+}
+
+.chat-message.own .chat-bubble {
+  background: var(--ink);
+  color: var(--paper);
+}
+
+.chat-bubble {
+  background: var(--paper-soft);
+  border: 2px solid var(--ink);
+  border-radius: 12px;
+  padding: 6px 10px;
+  max-width: 220px;
+}
+
+.chat-meta {
+  display: flex;
+  gap: 6px;
+  font-size: 0.7rem;
+  opacity: 0.8;
+  margin-bottom: 2px;
+}
+
+.chat-name {
+  font-weight: 700;
+}
+
+.chat-text {
+  font-size: 0.9rem;
+  word-break: break-word;
+}
+
+.chat-empty {
+  color: var(--gray);
+  text-align: center;
+  margin-top: 20px;
+  font-size: 0.85rem;
+}
+
+.dice-result {
+  margin-top: 6px;
+  border-top: 1px dashed currentColor;
+  padding-top: 4px;
+  font-size: 0.82rem;
+}
+
+.dice-group {
+  opacity: 0.95;
+}
+
+.dice-total {
+  margin-top: 3px;
+  font-weight: 700;
+}
+
+.chat-input-row {
+  display: flex;
+  gap: 8px;
+  padding: 12px;
+  border-top: 3px solid var(--ink);
+}
+
+/* ---------- Música ---------- */
+
+.music-bar {
+  overflow: hidden;
+}
+
+.music-bar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 14px;
+  cursor: pointer;
+  font-weight: 700;
+}
+
+.music-bar-body {
+  padding: 0 14px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.music-bar.music-bar-collapsed .music-bar-body {
+  height: 0;
+  padding: 0 14px;
+  overflow: hidden;
+}
+
+/* O player em si nunca some do DOM -- só encolhe visualmente --
+   assim a música continua tocando mesmo com a barra "fechada". */
+.yt-player-wrapper {
+  width: 100%;
+  height: 0;
+  overflow: hidden;
+  position: absolute;
+  pointer-events: none;
+  opacity: 0;
+}
+
+.music-link-form {
+  display: flex;
+  gap: 8px;
+}
+
+.music-controls-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+.music-time {
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---------- Toolbar inferior ---------- */
+
+.room-toolbar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 14px;
+  padding: 14px;
+  border-top: 3px solid var(--ink);
+  background: var(--paper);
+}
+
+/* ---------- Modal de configurações ---------- */
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 50;
+}
+
+.modal-box {
+  width: 420px;
+  max-width: 92vw;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  max-height: 85vh;
+  overflow-y: auto;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.modal-header h3 {
+  margin: 0;
+  font-family: 'Permanent Marker', cursive;
+  font-weight: normal;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 6px;
+}
+
+/* ---------- Menu de contexto (botão direito) ---------- */
+
+.context-menu {
+  position: fixed;
+  z-index: 60;
+  padding: 12px;
+  width: 220px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.context-menu-title {
+  font-weight: 700;
+  border-bottom: 2px solid var(--ink);
+  padding-bottom: 6px;
+}
+
+.context-menu-row {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+.context-menu-row input[type="checkbox"] {
+  margin-right: 6px;
+}

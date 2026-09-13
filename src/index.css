@@ -19,6 +19,76 @@
   --danger: #ff6b6b;
 }
 
+/* Style variants (override variables per style) */
+:root[data-style="cartoon"] {
+  --accent: #111111;
+  --paper: #ffffff;
+  --paper-soft: #f4f4f2;
+  --radius: 14px;
+  --font-main: 'Kalam', 'Comic Sans MS', cursive, sans-serif;
+}
+
+:root[data-style="ai"] {
+  --accent: #00e5ff;
+  --paper: #0b1020;
+  --paper-soft: #071025;
+  --ink: #dff6ff;
+  --radius: 8px;
+  --font-main: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+}
+
+:root[data-style="16bit"] {
+  --accent: #ffcc00;
+  --paper: #eef2ff;
+  --paper-soft: #e6e6ff;
+  --ink: #111;
+  --radius: 4px;
+  --font-main: 'Press Start 2P', monospace;
+}
+
+:root[data-style="neon"] {
+  --accent: #39ff14;
+  --paper: #02030a;
+  --paper-soft: #070814;
+  --ink: #eaffff;
+  --radius: 10px;
+  --font-main: system-ui, 'Segoe UI', Roboto, sans-serif;
+}
+
+:root[data-style="anime"] {
+  --accent: #ff8bd6;
+  --paper: #fff7fb;
+  --paper-soft: #fff0f7;
+  --ink: #222;
+  --radius: 16px;
+  --font-main: 'Noto Sans JP', system-ui, sans-serif;
+}
+
+:root[data-style="hellokitty"] {
+  --accent: #ff69b4;
+  --paper: #fff0f6;
+  --paper-soft: #ffe6f0;
+  --ink: #330033;
+  --radius: 18px;
+  --font-main: 'Poppins', system-ui, sans-serif;
+}
+
+/* Apply the selected font */
+body { font-family: var(--font-main, 'Kalam', 'Comic Sans MS', cursive, sans-serif); }
+
+/* Small UI for style selector in top-left */
+.style-selector {
+  position: fixed;
+  left: 12px;
+  top: 12px;
+  z-index: 120;
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+.style-selector select { padding: 6px 8px; border-radius: 8px; border: 2px solid var(--ink); background: var(--paper); color: var(--ink); }
+.style-selector .toon-btn.small { padding: 6px 8px; }
+
 * {
   box-sizing: border-box;
 }

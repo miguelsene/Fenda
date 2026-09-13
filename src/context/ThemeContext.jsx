@@ -10,6 +10,13 @@ export function ThemeProvider({ children }) {
       return 'light'
     }
   })
+  const [style, setStyle] = useState(() => {
+    try {
+      return localStorage.getItem('nex.style') || 'cartoon'
+    } catch {
+      return 'cartoon'
+    }
+  })
 
   useEffect(() => {
     try {
@@ -18,12 +25,23 @@ export function ThemeProvider({ children }) {
     document.documentElement.setAttribute('data-theme', theme)
   }, [theme])
 
+  useEffect(() => {
+    try {
+      localStorage.setItem('nex.style', style)
+    } catch {}
+    document.documentElement.setAttribute('data-style', style)
+  }, [style])
+
   function toggleTheme() {
     setTheme((t) => (t === 'light' ? 'dark' : 'light'))
   }
 
+  function setAppStyle(s) {
+    setStyle(s)
+  }
+
   return (
-    <ThemeContext.Provider value={{ theme, setTheme, toggleTheme }}>
+    <ThemeContext.Provider value={{ theme, setTheme, toggleTheme, style, setAppStyle }}>
       {children}
     </ThemeContext.Provider>
   )

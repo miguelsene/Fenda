@@ -1,4 +1,5 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import { useLocation } from 'react-router-dom'
 import { useNavigate } from 'react-router-dom'
 import { useAccount } from '../context/AccountContext'
 import Avatar from '../components/Avatar'
@@ -23,10 +24,19 @@ export default function Home() {
   const [guestAvatar, setGuestAvatar] = useState(activeProfile?.avatar || null)
 
   const [form, setForm] = useState({ name: '', email: '', password: '', avatar: null })
-  const [authError, setAuthError] = useState('')
+      const [authError, setAuthError] = useState('')
 
   const [joinCode, setJoinCode] = useState('')
   const recentRooms = getRecentRooms()
+  const location = useLocation()
+
+  useEffect(() => {
+    // If redirected from a room link, prefill the join code
+    if (location?.state?.toJoin) {
+      setJoinCode(location.state.toJoin)
+      setMode('guest')
+    }
+  }, [location])
 
   async function handleAvatarPick(e, target) {
     const file = e.target.files?.[0]
@@ -44,7 +54,7 @@ export default function Home() {
 
   function handleCreateRoom() {
     if (!activeProfile && !guestName.trim()) {
-      alert('Digite um nome antes de criar a sala 🙂')
+          alert('Digite um nome antes de criar a sala')
       return
     }
     ensureProfileSaved()
@@ -55,7 +65,7 @@ export default function Home() {
   function handleJoinRoom(e) {
     e.preventDefault()
     if (!activeProfile && !guestName.trim()) {
-      alert('Digite um nome antes de entrar na sala 🙂')
+          alert('Digite um nome antes de entrar na sala')
       return
     }
     const code = normalizeRoomCode(joinCode)
@@ -85,10 +95,11 @@ export default function Home() {
 
   return (
     <div className="home-page">
-      <div className="home-hero">
-        <h1 className="app-title">🎬 Toon Meet</h1>
-        <p className="app-subtitle">Chamadas em grupo, com música, dados de RPG e um clima cartoon P&B.</p>
-      </div>
+        <div className="home-hero">
+          <img src="/nex.png" alt="Nex" style={{height:72, marginBottom:12}} onError={(e)=>{e.target.style.display='none'}} />
+          <h1 className="app-title">Nex</h1>
+          <p className="app-subtitle">Chamadas em grupo, música e diversão — pronto para jogar.</p>
+        </div>
 
       <div className="home-grid">
         {/* Cartão de perfil / login */}
@@ -181,7 +192,7 @@ export default function Home() {
         <div className="toon-panel home-card">
           <h3>Iniciar ou entrar em uma chamada</h3>
           <button className="toon-btn primary big-btn" onClick={handleCreateRoom}>
-            ➕ Criar nova sala
+            <i className="bi bi-plus-lg" style={{marginRight:8}}></i>Criar nova sala
           </button>
 
           <div className="divider">ou</div>

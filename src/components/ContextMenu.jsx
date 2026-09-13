@@ -25,7 +25,7 @@ export default function ContextMenu({ x, y, name, volume, muted, onVolumeChange,
       style={{ left: x, top: y }}
       onContextMenu={(e) => e.preventDefault()}
     >
-      <div className="context-menu-title">🔊 {name}</div>
+      <div className="context-menu-title"><i className="bi bi-volume-up" style={{marginRight:8}}></i>{name}</div>
       <label className="context-menu-row">
         <input type="checkbox" checked={muted} onChange={onToggleMute} />
         Silenciar para mim

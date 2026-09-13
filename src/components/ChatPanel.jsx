@@ -21,7 +21,7 @@ export default function ChatPanel({ messages, onSend, selfId, visible }) {
   return (
     <div className={`chat-panel toon-panel ${visible ? '' : 'panel-hidden'}`}>
       <div className="chat-header">
-        <strong>💬 Chat</strong>
+        <strong><i className="bi bi-chat-left-text" style={{marginRight:8}}></i>Chat</strong>
         <span className="chat-hint">dica: digite "2d20 3d10 1d6" pra rolar dados</span>
       </div>
 
@@ -47,7 +47,7 @@ export default function ChatPanel({ messages, onSend, selfId, visible }) {
                     </div>
                   ))}
                   {m.dice.groups.length > 1 && (
-                    <div className="dice-total">🎲 Total: {m.dice.total}</div>
+                    <div className="dice-total"><i className="bi bi-dice-5" style={{marginRight:6}}></i> Total: {m.dice.total}</div>
                   )}
                 </div>
               )}
@@ -55,7 +55,7 @@ export default function ChatPanel({ messages, onSend, selfId, visible }) {
           </div>
         ))}
         {messages.length === 0 && (
-          <div className="chat-empty">Nenhuma mensagem ainda. Diga oi! 👋</div>
+          <div className="chat-empty">Nenhuma mensagem ainda. Diga oi! <i className="bi bi-hand-thumbs-up"></i></div>
         )}
       </div>
 

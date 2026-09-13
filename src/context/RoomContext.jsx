@@ -20,6 +20,7 @@ export function RoomProvider({ roomCode, profile, children }) {
   const [messages, setMessages] = useState([])
   const [musicState, setMusicState] = useState(null) // { videoId, isPlaying, time, updatedAt }
   const [connected, setConnected] = useState(false)
+  const [joining, setJoining] = useState(false)
 
   const [localCameraStream, setLocalCameraStream] = useState(null)
   const [localScreenStream, setLocalScreenStream] = useState(null)
@@ -29,8 +30,11 @@ export function RoomProvider({ roomCode, profile, children }) {
   // Entra na sala assim que o componente monta
   useEffect(() => {
     if (!roomCode) return
+    setJoining(true)
     const room = joinRoom({ appId: APP_ID }, `toonmeet-${roomCode}`)
     roomRef.current = room
+    // mark as joined locally once joinRoom returned
+    setJoining(false)
 
     const [sendProfile, getProfile] = room.makeAction('profile')
     const [sendChat, getChat] = room.makeAction('chat')
@@ -250,6 +254,7 @@ export function RoomProvider({ roomCode, profile, children }) {
         messages,
         musicState,
         connected,
+        joining,
         localCameraStream,
         localScreenStream,
         micEnabled,

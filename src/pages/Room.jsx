@@ -8,6 +8,7 @@ import MusicBar from '../components/MusicBar'
 import SettingsModal from '../components/SettingsModal'
 import ContextMenu from '../components/ContextMenu'
 import { addRecentRoom } from '../lib/storage'
+import { useTheme } from '../context/ThemeContext'
 
 export default function RoomPage() {
   const { code } = useParams()
@@ -20,7 +21,8 @@ export default function RoomPage() {
 
   if (!activeProfile) {
     // Sem nome definido: manda pra home pra configurar antes de entrar
-    navigate('/', { replace: true })
+    // preserva o código para que a home possa preencher o campo de entrada
+    navigate('/', { state: { toJoin: code } })
     return null
   }
 
@@ -44,6 +46,7 @@ function RoomView({ code, profile }) {
     localScreenStream,
     micEnabled,
     camEnabled,
+    joining,
     sendChatMessage,
     broadcastMusic,
     startCamera,
@@ -86,7 +89,7 @@ function RoomView({ code, profile }) {
     const url = `${window.location.origin}${window.location.pathname}#/room/${code}`
     try {
       await navigator.clipboard.writeText(url)
-      setCopyFeedback('Link copiado! 📋')
+      setCopyFeedback('Link copiado!')
     } catch {
       setCopyFeedback(url)
     }
@@ -157,16 +160,27 @@ function RoomView({ code, profile }) {
 
   const participantCount = Object.keys(peers).length + 1
 
+  const { theme, toggleTheme } = useTheme()
+
   return (
     <div className="room-page">
+      {/** Loading overlay while joining the room */}
+      {joining && (
+        <div className="room-loading-overlay">
+          <img src="/nex.png" alt="Nex" className="logo" onError={(e)=>{e.target.style.display='none'}} />
+          <div className="room-loading-spinner" />
+          <div style={{fontWeight:700}}>Entrando na sala...</div>
+          <div className="muted-text">Aguarde enquanto conectamos você — pode demorar alguns segundos.</div>
+        </div>
+      )}
       <header className="room-top-bar">
         <div className="room-code-box">
           <span className="muted-text">Sala</span>
           <strong className="room-code">{code}</strong>
-          <button className="toon-btn small" onClick={handleShareLink}>🔗 Compartilhar</button>
+          <button className="toon-btn small" onClick={handleShareLink}><i className="bi bi-link-45deg" style={{marginRight:8}}></i>Compartilhar</button>
           {copyFeedback && <span className="copy-feedback">{copyFeedback}</span>}
         </div>
-        <div className="room-participants-count">👥 {participantCount}</div>
+        <div className="room-participants-count"><i className="bi bi-people-fill" style={{marginRight:6}}></i> {participantCount}</div>
       </header>
 
       <main className="room-main">
@@ -239,33 +253,36 @@ function RoomView({ code, profile }) {
 
       <footer className="room-toolbar">
         <button className={`toon-btn round ${micEnabled ? '' : 'off'}`} onClick={toggleMic} title="Microfone">
-          {micEnabled ? '🎤' : '🔇'}
+          <i className={micEnabled ? 'bi bi-mic-fill' : 'bi bi-mic-mute-fill'}></i>
         </button>
         <button
           className={`toon-btn round ${camEnabled ? 'on' : ''}`}
           onClick={() => (camEnabled ? stopCamera() : startCamera())}
           title="Câmera"
         >
-          {camEnabled ? '📷' : '📵'}
+          <i className={camEnabled ? 'bi bi-camera-video-fill' : 'bi bi-camera-video-off'}></i>
         </button>
         <button
           className={`toon-btn round ${localScreenStream ? 'on' : ''}`}
           onClick={() => (localScreenStream ? stopScreenShare() : startScreenShare())}
           title="Compartilhar tela"
         >
-          🖥️
+          <i className="bi bi-display"></i>
         </button>
         <button className="toon-btn round" onClick={() => setChatOpen((v) => !v)} title="Chat">
-          💬
+          <i className="bi bi-chat-left-text"></i>
         </button>
         <button className="toon-btn round" onClick={() => setMusicCollapsed((v) => !v)} title="Música">
-          🎵
+          <i className="bi bi-music-note"></i>
         </button>
         <button className="toon-btn round" onClick={() => setSettingsOpen(true)} title="Configurações">
-          ⚙️
+          <i className="bi bi-gear"></i>
+        </button>
+        <button className="toon-btn round" onClick={toggleTheme} title="Alternar tema">
+          <i className={theme === 'light' ? 'bi bi-sun' : 'bi bi-moon'}></i>
         </button>
         <button className="toon-btn round leave" onClick={handleLeave} title="Sair da chamada">
-          📞
+          <i className="bi bi-telephone"></i>
         </button>
       </footer>
 

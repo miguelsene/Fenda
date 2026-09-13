@@ -7,6 +7,7 @@ export default function MusicBar({ musicState, onBroadcast, collapsed, onToggleC
   const playerRef = useRef(null)
   const readyRef = useRef(false)
   const [linkInput, setLinkInput] = useState('')
+  const linkRef = useRef(null)
   const [localVolume, setLocalVolume] = useState(70)
   const [progress, setProgress] = useState(0)
   const [duration, setDuration] = useState(0)
@@ -80,7 +81,7 @@ export default function MusicBar({ musicState, onBroadcast, collapsed, onToggleC
     e.preventDefault()
     const id = extractYouTubeId(linkInput)
     if (!id) {
-      alert('Não consegui reconhecer esse link do YouTube 😕')
+      alert('Não foi possível reconhecer esse link do YouTube')
       return
     }
     onBroadcast({ videoId: id, isPlaying: true, time: 0 })
@@ -115,10 +116,17 @@ export default function MusicBar({ musicState, onBroadcast, collapsed, onToggleC
     return `${m}:${sec.toString().padStart(2, '0')}`
   }
 
+  // focus input when opened
+  useEffect(() => {
+    if (!collapsed) {
+      setTimeout(() => linkRef.current?.focus?.(), 80)
+    }
+  }, [collapsed])
+
   return (
     <div className={`music-bar toon-panel ${collapsed ? 'music-bar-collapsed' : ''}`}>
       <div className="music-bar-header" onClick={onToggleCollapsed}>
-        <span>🎵 Música {musicState?.videoId ? '(tocando)' : ''}</span>
+        <span><i className="bi bi-music-note" style={{marginRight:8}}></i> Música {musicState?.videoId ? '(tocando)' : ''}</span>
         <span className="collapse-arrow">{collapsed ? '▲' : '▼'}</span>
       </div>
 
@@ -131,13 +139,14 @@ export default function MusicBar({ musicState, onBroadcast, collapsed, onToggleC
 
         <form className="music-link-form" onSubmit={handleLoad}>
           <input
+            ref={linkRef}
             className="toon-input"
             placeholder="Cole o link do YouTube..."
             value={linkInput}
             onChange={(e) => setLinkInput(e.target.value)}
           />
           <button className="toon-btn primary" type="submit">
-            Tocar
+            <i className="bi bi-play-fill" style={{marginRight:8}}></i> Tocar
           </button>
         </form>
 
@@ -145,7 +154,7 @@ export default function MusicBar({ musicState, onBroadcast, collapsed, onToggleC
           <>
             <div className="music-controls-row">
               <button className="toon-btn" onClick={handlePlayPause}>
-                {musicState.isPlaying ? '⏸️ Pausar' : '▶️ Tocar'}
+                {musicState.isPlaying ? <><i className="bi bi-pause-fill" style={{marginRight:8}}></i> Pausar</> : <><i className="bi bi-play-fill" style={{marginRight:8}}></i> Tocar</>}
               </button>
               <span className="music-time">{fmt(progress)} / {fmt(duration)}</span>
             </div>
@@ -158,7 +167,7 @@ export default function MusicBar({ musicState, onBroadcast, collapsed, onToggleC
               onChange={handleSeek}
             />
             <div className="music-controls-row">
-              <span>🔊 Meu volume da música</span>
+              <span><i className="bi bi-volume-up" style={{marginRight:8}}></i>Meu volume da música</span>
               <input
                 className="toon-range"
                 type="range"

@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useMediaDevices } from '../hooks/useMediaDevices'
 import { getDevicePrefs, saveDevicePrefs } from '../lib/storage'
+import { useTheme } from '../context/ThemeContext'
 
 export default function SettingsModal({ onClose, onApplyCamera }) {
   const { devices, refresh } = useMediaDevices()
@@ -40,12 +41,12 @@ export default function SettingsModal({ onClose, onApplyCamera }) {
     <div className="modal-overlay" onClick={onClose}>
       <div className="toon-panel modal-box" onClick={(e) => e.stopPropagation()}>
         <div className="modal-header">
-          <h3>⚙️ Configurações</h3>
-          <button className="toon-btn" onClick={onClose}>✕</button>
+          <h3><i className="bi bi-gear" style={{marginRight:8}}></i>Configurações</h3>
+          <button className="toon-btn" onClick={onClose}><i className="bi bi-x-lg"></i></button>
         </div>
 
         <label className="settings-field">
-          <span>🎤 Microfone (entrada de áudio)</span>
+          <span><i className="bi bi-mic-fill" style={{marginRight:8}}></i>Microfone (entrada de áudio)</span>
           <select className="toon-input" value={audioInput} onChange={(e) => setAudioInput(e.target.value)} onFocus={refresh}>
             <option value="">Padrão do sistema</option>
             {devices.audioInputs.map((d) => (
@@ -57,7 +58,7 @@ export default function SettingsModal({ onClose, onApplyCamera }) {
         </label>
 
         <label className="settings-field">
-          <span>🔈 Saída de áudio (alto-falante/fone)</span>
+          <span><i className="bi bi-volume-up" style={{marginRight:8}}></i>Saída de áudio (alto-falante/fone)</span>
           <select className="toon-input" value={audioOutput} onChange={(e) => setAudioOutput(e.target.value)} onFocus={refresh}>
             <option value="">Padrão do sistema</option>
             {devices.audioOutputs.map((d) => (
@@ -70,7 +71,7 @@ export default function SettingsModal({ onClose, onApplyCamera }) {
         </label>
 
         <label className="settings-field">
-          <span>🎥 Câmera</span>
+          <span><i className="bi bi-camera-video-fill" style={{marginRight:8}}></i>Câmera</span>
           <select className="toon-input" value={videoInput} onChange={(e) => setVideoInput(e.target.value)} onFocus={refresh}>
             <option value="">Padrão do sistema</option>
             {devices.videoInputs.map((d) => (
@@ -87,7 +88,21 @@ export default function SettingsModal({ onClose, onApplyCamera }) {
             {applying ? 'Aplicando...' : 'Salvar e aplicar'}
           </button>
         </div>
+        <div style={{display:'flex', justifyContent:'space-between', alignItems:'center', marginTop:6}}>
+          <div style={{fontWeight:700}}>Tema</div>
+          <ThemeToggle />
+        </div>
       </div>
     </div>
+  )
+}
+
+function ThemeToggle() {
+  const { theme, toggleTheme } = useTheme()
+  return (
+    <button className="toon-btn" onClick={toggleTheme} style={{display:'flex',alignItems:'center',gap:8}}>
+      <i className={theme === 'light' ? 'bi bi-sun' : 'bi bi-moon'}></i>
+      {theme === 'light' ? 'Claro' : 'Escuro'}
+    </button>
   )
 }

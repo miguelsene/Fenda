@@ -60,23 +60,23 @@ export default function VideoTile({
       )}
 
       <div className="tile-label">
-        {kind === 'screen' && <span className="tile-badge">🖥️ tela</span>}
+        {kind === 'screen' && <span className="tile-badge"><i className="bi bi-display" style={{marginRight:6}}></i>tela</span>}
         <Avatar name={name} src={avatar} size={22} />
         <span className="tile-name">{name}{isLocal ? ' (você)' : ''}</span>
-        {micOff && <span className="tile-mic-off">🔇</span>}
+        {micOff && <span className="tile-mic-off"><i className="bi bi-mic-mute-fill"></i></span>}
       </div>
 
       {onMaximize && (
-        <button
-          className="toon-btn tile-maximize-btn"
-          title="Maximizar"
-          onClick={(e) => {
-            e.stopPropagation()
-            onMaximize()
-          }}
-        >
-          ⛶
-        </button>
+          <button
+            className="toon-btn tile-maximize-btn"
+            title="Maximizar"
+            onClick={(e) => {
+              e.stopPropagation()
+              onMaximize()
+            }}
+          >
+            <i className="bi bi-arrows-fullscreen"></i>
+          </button>
       )}
     </div>
   )

@@ -1,0 +1,853 @@
+/* ==========================================================================
+   NEX — 16BIT  ·  room.css  (parte 1)
+   Sala de chamada: layout, barra superior, tiles de vídeo e toolbar.
+   ========================================================================== */
+
+.room-page {
+  position: relative;
+  z-index: 1;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* ---------- Barra superior ---------- */
+
+.room-top-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 10px 18px;
+  color: var(--ink);
+  background-color: var(--panel);
+  border-bottom: 4px solid var(--edge-dark);
+  box-shadow: 0 6px 0 0 var(--shadow);
+}
+
+.room-code-box {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  min-width: 0;
+}
+
+.room-code {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 10px;
+  font-family: var(--font-display);
+  font-size: 0.82rem;
+  letter-spacing: 2px;
+  color: var(--accent-ink);
+  background-color: var(--accent);
+  border: 3px solid var(--edge-dark);
+  box-shadow: 3px 3px 0 0 var(--shadow);
+  animation: glow-pulse 3.2s ease-in-out infinite;
+}
+
+.copy-feedback {
+  font-family: var(--font-ui);
+  font-size: 0.54rem;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  color: var(--accent);
+  animation: pop-in 0.3s steps(4, end) both;
+}
+
+.room-participants-count {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 10px;
+  font-family: var(--font-ui);
+  font-size: 0.58rem;
+  letter-spacing: 0.8px;
+  color: var(--ink);
+  background-color: var(--panel-deep);
+  border: 3px solid var(--edge-dark);
+  box-shadow: 3px 3px 0 0 var(--shadow);
+  white-space: nowrap;
+}
+
+.room-participants-count i.bi {
+  color: var(--accent);
+}
+
+/* ---------- Área principal ---------- */
+
+.room-main {
+  flex: 1;
+  display: flex;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.video-area {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  min-width: 0;
+  padding: 16px;
+  overflow-y: auto;
+}
+
+.video-grid {
+  display: grid;
+  flex: 1;
+  gap: 14px;
+  align-content: start;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.grid-count-1 {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.grid-count-2,
+.grid-count-3,
+.grid-count-4 {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.grid-count-5,
+.grid-count-6,
+.grid-count-7,
+.grid-count-8,
+.grid-count-9 {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+/* ---------- Tile de vídeo ---------- */
+
+.video-tile {
+  position: relative;
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+  background-color: var(--dark-surface);
+  border: 4px solid var(--edge-dark);
+  border-radius: var(--radius);
+  box-shadow:
+    inset 0 0 0 3px var(--accent-soft),
+    6px 6px 0 0 var(--shadow);
+  animation: pop-in 0.4s steps(6, end) both;
+  transition:
+    box-shadow 0.24s ease,
+    border-color 0.24s ease;
+}
+
+.video-tile::after {
+  /* cantos pixelados decorativos */
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image:
+    linear-gradient(var(--accent), var(--accent)),
+    linear-gradient(var(--accent), var(--accent)),
+    linear-gradient(var(--accent), var(--accent)),
+    linear-gradient(var(--accent), var(--accent));
+  background-repeat: no-repeat;
+  background-size: 6px 6px;
+  background-position: 3px 3px, calc(100% - 9px) 3px, 3px calc(100% - 9px),
+    calc(100% - 9px) calc(100% - 9px);
+  opacity: 0.9;
+}
+
+.video-tile.speaking {
+  border-color: var(--accent);
+  animation: pulse-ring 1.6s ease-out infinite;
+}
+
+.video-tile.focused {
+  aspect-ratio: 16 / 9;
+}
+
+.video-tile.screen-tile {
+  background-color: #05060a;
+}
+
+.video-el {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  background-color: var(--dark-surface);
+}
+
+.video-el.screen-video {
+  object-fit: contain;
+  background-color: #000;
+}
+
+.video-placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  background-color: var(--dark-surface);
+  background-image: repeating-linear-gradient(
+      45deg,
+      rgba(255, 255, 255, 0.05) 0 10px,
+      transparent 10px 20px
+    ),
+    repeating-linear-gradient(
+      -45deg,
+      rgba(0, 0, 0, 0.35) 0 10px,
+      transparent 10px 20px
+    );
+}
+
+.video-placeholder::before {
+  content: '';
+  position: absolute;
+  width: 74px;
+  height: 74px;
+  border: 3px dashed var(--accent-soft);
+  animation: pixel-spin 9s steps(12, end) infinite;
+}
+
+.tile-label {
+  position: absolute;
+  left: 10px;
+  bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  max-width: calc(100% - 20px);
+  padding: 3px 10px 3px 4px;
+  font-family: var(--font-ui);
+  font-size: 0.56rem;
+  letter-spacing: 0.5px;
+  color: var(--ink);
+  background-color: var(--panel);
+  border: 3px solid var(--edge-dark);
+  box-shadow: 3px 3px 0 0 var(--shadow);
+}
+
+.tile-name {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.tile-badge {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  padding: 2px 8px;
+  font-family: var(--font-ui);
+  font-size: 0.52rem;
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+  color: var(--accent-ink);
+  background-color: var(--accent);
+  border: 3px solid var(--edge-dark);
+}
+
+.tile-mic-off {
+  color: var(--danger);
+}
+
+.tile-maximize-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 34px;
+  height: 34px;
+  min-height: 0;
+  padding: 0;
+  opacity: 0.9;
+}
+
+.tile-maximize-btn i.bi {
+  font-size: 0.85rem;
+}
+
+/* ---------- Layout focado ---------- */
+
+.focused-layout {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 12px;
+  min-height: 0;
+}
+
+.focused-layout .video-tile.focused {
+  flex: 1;
+  animation: none;
+}
+
+.focused-strip {
+  display: flex;
+  gap: 10px;
+  padding: 4px 4px 8px;
+  overflow-x: auto;
+}
+
+.focused-strip .video-tile {
+  width: 168px;
+  min-width: 168px;
+  aspect-ratio: 16 / 10;
+  animation: none;
+}
+
+/* ---------- Toolbar inferior ---------- */
+
+.room-toolbar {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  flex-wrap: wrap;
+  padding: 14px;
+  background-color: var(--panel);
+  border-top: 4px solid var(--edge-dark);
+  box-shadow: 0 -6px 0 0 var(--shadow);
+}
+
+.room-toolbar__group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.room-toolbar__divider {
+  width: 4px;
+  height: 40px;
+  background-image: repeating-linear-gradient(
+    0deg,
+    var(--line) 0 6px,
+    transparent 6px 12px
+  );
+}
+
+@media (max-width: 900px) {
+  .video-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 760px) {
+  .room-toolbar {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 40;
+    gap: 8px;
+    justify-content: space-around;
+    padding: 8px 6px;
+    box-shadow: 0 -6px 0 0 var(--shadow);
+  }
+
+  .room-toolbar__divider {
+    display: none;
+  }
+
+  .toon-btn.round {
+    width: 46px;
+    height: 46px;
+  }
+
+  .toon-btn.round i.bi {
+    font-size: 1.05rem;
+  }
+
+  .room-main {
+    padding-bottom: 74px;
+  }
+
+  .room-top-bar {
+    padding: 8px 12px;
+  }
+
+  .room-code {
+    font-size: 0.68rem;
+  }
+}
+/* ==========================================================================
+   NEX — 16BIT  ·  room.css  (parte 2)
+   Chat, música, modal de configurações, menu de contexto e loading.
+   ========================================================================== */
+
+/* ---------- Chat ---------- */
+
+.chat-panel {
+  display: flex;
+  flex-direction: column;
+  width: 330px;
+  min-width: 330px;
+  margin: 16px 16px 16px 0;
+  padding: 0;
+  overflow: hidden;
+  animation: rise-in 0.36s steps(7, end) both;
+}
+
+.chat-panel.panel-hidden {
+  display: none;
+}
+
+.chat-header {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 10px 14px;
+  border-bottom: 4px solid var(--edge-dark);
+  background-color: var(--panel-soft);
+}
+
+.chat-header strong {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-ui);
+  font-size: 0.62rem;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+}
+
+.chat-header strong i.bi {
+  color: var(--accent);
+}
+
+.chat-hint {
+  font-size: 0.82rem;
+  color: var(--ink-faint);
+}
+
+.chat-messages {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 12px;
+  overflow-y: auto;
+}
+
+.chat-message {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  animation: bubble-in-peer 0.32s steps(6, end) both;
+}
+
+.chat-message.own {
+  flex-direction: row-reverse;
+  animation: bubble-in-own 0.32s steps(6, end) both;
+}
+
+.chat-bubble {
+  max-width: 220px;
+  padding: 6px 10px;
+  color: var(--ink);
+  background-color: var(--panel-soft);
+  border: 3px solid var(--edge-dark);
+  border-radius: var(--radius);
+  box-shadow: 3px 3px 0 0 var(--shadow);
+}
+
+.chat-message.own .chat-bubble {
+  color: var(--accent-ink);
+  background-color: var(--accent);
+}
+
+.chat-meta {
+  display: flex;
+  gap: 8px;
+  align-items: baseline;
+  margin-bottom: 2px;
+  font-size: 0.78rem;
+  opacity: 0.85;
+}
+
+.chat-name {
+  font-family: var(--font-ui);
+  font-size: 0.54rem;
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+}
+
+.chat-text {
+  font-size: 1rem;
+  line-height: 1.25;
+  word-break: break-word;
+  white-space: pre-wrap;
+}
+
+.chat-empty {
+  margin-top: 22px;
+  font-size: 0.95rem;
+  text-align: center;
+  color: var(--ink-faint);
+}
+
+.chat-empty i.bi {
+  color: var(--accent);
+  animation: float-y 1.8s ease-in-out infinite;
+}
+
+.dice-result {
+  margin-top: 6px;
+  padding-top: 5px;
+  font-size: 0.92rem;
+  border-top: 2px dashed currentColor;
+}
+
+.dice-group {
+  animation: pop-in 0.3s steps(4, end) both;
+}
+
+.dice-total {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 4px;
+  font-family: var(--font-ui);
+  font-size: 0.56rem;
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+  animation: bounce-select 0.5s steps(6, end) both;
+}
+
+.chat-input-row {
+  display: flex;
+  gap: 8px;
+  padding: 12px;
+  border-top: 4px solid var(--edge-dark);
+  background-color: var(--panel-soft);
+}
+
+/* ---------- Música ---------- */
+
+.music-bar {
+  position: relative;
+  padding: 0;
+  overflow: hidden;
+}
+
+.music-bar-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 10px 14px;
+  font-family: var(--font-ui);
+  font-size: 0.6rem;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  background-color: var(--panel-soft);
+  cursor: pointer;
+}
+
+.music-bar-header span {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.music-bar-header i.bi {
+  color: var(--accent);
+}
+
+.music-bar__now {
+  color: var(--ink-faint);
+  font-size: 0.9rem;
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+.collapse-arrow {
+  color: var(--accent);
+}
+
+.music-eq {
+  display: flex;
+  align-items: flex-end;
+  gap: 2px;
+  height: 20px;
+}
+
+.music-eq__bar {
+  width: 4px;
+  height: 5px;
+  background-color: var(--accent);
+  animation: eq-bar 0.7s steps(4, end) infinite;
+}
+
+.music-eq__bar:nth-child(2) {
+  animation-duration: 0.9s;
+  animation-delay: 0.1s;
+}
+
+.music-eq__bar:nth-child(3) {
+  animation-duration: 0.55s;
+  animation-delay: 0.2s;
+}
+
+.music-eq__bar:nth-child(4) {
+  animation-duration: 0.8s;
+  animation-delay: 0.05s;
+}
+
+.music-bar-body {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 0 14px 14px;
+}
+
+.music-bar.music-bar-collapsed .music-bar-body {
+  height: 0;
+  padding: 0 14px;
+  overflow: hidden;
+}
+
+/* O player nunca sai do DOM — só fica escondido, para a música não parar. */
+.yt-player-wrapper {
+  position: absolute;
+  width: 100%;
+  height: 0;
+  overflow: hidden;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.music-link-form {
+  display: flex;
+  gap: 8px;
+}
+
+.music-controls-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  font-size: 0.95rem;
+}
+
+.music-controls-row > span {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.music-controls-row i.bi {
+  color: var(--accent);
+}
+
+.music-time {
+  font-family: var(--font-ui);
+  font-size: 0.56rem;
+  letter-spacing: 0.8px;
+  font-variant-numeric: tabular-nums;
+  color: var(--ink-soft);
+}
+
+/* ---------- Modal ---------- */
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  background-color: rgba(0, 0, 0, 0.62);
+  animation: overlay-in 0.22s ease-out both;
+}
+
+.modal-box {
+  display: flex;
+  flex-direction: column;
+  width: 440px;
+  max-width: 100%;
+  max-height: 86vh;
+  overflow-y: auto;
+  animation: window-in 0.32s steps(7, end) both;
+}
+
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin: -16px -16px 14px;
+  padding: 8px 12px;
+  color: var(--accent-ink);
+  background-color: var(--accent);
+  border-bottom: 4px solid var(--edge-dark);
+  background-image: repeating-linear-gradient(
+    45deg,
+    var(--accent-strong) 0 6px,
+    transparent 6px 12px
+  );
+}
+
+.modal-header h3 {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  font-size: 0.68rem;
+  letter-spacing: 1.2px;
+}
+
+.modal-header .toon-btn {
+  min-height: 0;
+  padding: 4px 8px;
+  color: var(--accent-ink);
+  background-color: transparent;
+  border-color: var(--accent-ink);
+  box-shadow: none;
+}
+
+.modal-header .toon-btn:hover {
+  color: var(--accent-ink);
+  background-color: rgba(0, 0, 0, 0.22);
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 10px;
+  padding-top: 12px;
+  border-top: 3px dashed var(--line);
+}
+
+/* ---------- Menu de contexto ---------- */
+
+.context-menu {
+  position: fixed;
+  z-index: 70;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 232px;
+  animation: pop-in 0.18s steps(4, end) both;
+}
+
+.context-menu-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding-bottom: 6px;
+  font-family: var(--font-ui);
+  font-size: 0.58rem;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  border-bottom: 3px dashed var(--line);
+}
+
+.context-menu-title i.bi {
+  color: var(--accent);
+}
+
+.context-menu-row {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 0.95rem;
+}
+
+.context-menu-row input[type='checkbox'] {
+  accent-color: var(--accent);
+  margin-right: 6px;
+}
+
+/* ---------- Loading da sala ---------- */
+
+.room-loading-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 80;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  padding: 20px;
+  text-align: center;
+  color: var(--ink);
+  background-color: rgba(0, 0, 0, 0.72);
+  animation: overlay-in 0.24s ease-out both;
+}
+
+.room-loading-overlay img.logo {
+  width: 116px;
+  height: auto;
+  background-color: var(--panel);
+  border: 4px solid var(--accent);
+  box-shadow: 6px 6px 0 0 var(--shadow);
+  animation: float-y 3.4s ease-in-out infinite;
+}
+
+.room-loading-blocks {
+  display: flex;
+  gap: 6px;
+}
+
+.room-loading-blocks span {
+  width: 14px;
+  height: 14px;
+  background-color: var(--accent);
+  border: 3px solid var(--edge-dark);
+  animation: loader-blocks 1s steps(4, end) infinite;
+}
+
+.room-loading-blocks span:nth-child(2) {
+  animation-delay: 0.12s;
+}
+
+.room-loading-blocks span:nth-child(3) {
+  animation-delay: 0.24s;
+}
+
+.room-loading-blocks span:nth-child(4) {
+  animation-delay: 0.36s;
+}
+
+.room-loading-title {
+  font-family: var(--font-display);
+  font-size: 0.78rem;
+  letter-spacing: 2px;
+  animation: blink 1.4s steps(2, end) infinite;
+}
+
+.room-loading-overlay .muted-text {
+  max-width: 420px;
+}
+
+.room-loading-spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid var(--accent-soft);
+  border-top-color: var(--accent);
+  animation: pixel-spin 0.9s steps(8, end) infinite;
+}
+
+@media (max-width: 760px) {
+  .chat-panel {
+    width: 100%;
+    min-width: 0;
+    margin: 0;
+    border-left: none;
+    border-right: none;
+  }
+
+  .chat-panel.panel-hidden {
+    display: none;
+  }
+
+  .video-area {
+    padding: 10px 10px 90px;
+  }
+}

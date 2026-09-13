@@ -1,73 +1,109 @@
-import { createContext, useContext, useEffect, useState } from 'react'
+import { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react'
+import {
+  DEFAULT_PALETTE_ID,
+  PALETTES,
+  applyThemeTokens,
+  buildThemeTokens,
+  findPaletteByColors,
+  getPalette
+} from '../lib/palettes'
+
+const THEME_STORAGE_KEY = 'nex.paletteId'
+const LEGACY_PALETTE_KEY = 'nex.palette'
+const STYLE_STORAGE_KEY = 'nex.style'
+
+// Tema fixo: o app inteiro usa apenas o estilo 16-bit.
+export const APP_STYLE = '16bit'
 
 const ThemeContext = createContext(null)
 
+function readStoredPaletteId() {
+  try {
+    const stored = localStorage.getItem(THEME_STORAGE_KEY)
+    if (stored && PALETTES.some((palette) => palette.id === stored)) return stored
+
+    // Migra a escolha antiga (array de cores) para o novo id de paleta.
+    const legacy = JSON.parse(localStorage.getItem(LEGACY_PALETTE_KEY) || 'null')
+    const migrated = findPaletteByColors(legacy)
+    if (migrated) return migrated
+  } catch {
+    /* storage indisponível — usa o padrão */
+  }
+  return DEFAULT_PALETTE_ID
+}
+
 export function ThemeProvider({ children }) {
-  const [theme, setTheme] = useState(() => {
+  const [paletteId, setPaletteId] = useState(readStoredPaletteId)
+  const [switchCount, setSwitchCount] = useState(0)
+
+  const palette = useMemo(() => getPalette(paletteId), [paletteId])
+  const tokens = useMemo(() => buildThemeTokens(palette.colors), [palette])
+
+  // O estilo é sempre 16-bit — mantemos o atributo para os seletores de CSS.
+  useEffect(() => {
+    document.documentElement.setAttribute('data-style', APP_STYLE)
     try {
-      return localStorage.getItem('nex.theme') || 'light'
+      localStorage.setItem(STYLE_STORAGE_KEY, APP_STYLE)
     } catch {
-      return 'light'
+      /* ignora */
     }
-  })
-  const [style, setStyle] = useState(() => {
-    try {
-      return localStorage.getItem('nex.style') || '16bit'
-    } catch {
-      return '16bit'
-    }
-  })
-  const [palette, setPalette] = useState(() => {
-    try {
-      return JSON.parse(localStorage.getItem('nex.palette')) || null
-    } catch {
-      return null
-    }
-  })
+  }, [])
 
   useEffect(() => {
+    applyThemeTokens(tokens)
+    document.documentElement.setAttribute('data-palette', palette.id)
     try {
-      localStorage.setItem('nex.theme', theme)
-    } catch {}
-    document.documentElement.setAttribute('data-theme', theme)
-  }, [theme])
-
-  useEffect(() => {
-    try {
-      localStorage.setItem('nex.style', style)
-    } catch {}
-    document.documentElement.setAttribute('data-style', style)
-  }, [style])
-
-  useEffect(() => {
-    try {
-      localStorage.setItem('nex.palette', JSON.stringify(palette))
-    } catch {}
-    if (palette && Array.isArray(palette)) {
-      // apply palette to CSS variables --p0..--p4
-      palette.forEach((c, i) => {
-        document.documentElement.style.setProperty(`--p${i}`, c)
-      })
+      localStorage.setItem(THEME_STORAGE_KEY, palette.id)
+      localStorage.removeItem(LEGACY_PALETTE_KEY)
+    } catch {
+      /* ignora */
     }
-  }, [palette])
+  }, [tokens, palette])
 
-  function toggleTheme() {
-    setTheme((t) => (t === 'light' ? 'dark' : 'light'))
-  }
+  // Ao trocar de paleta, liga transições curtas para as cores "escorrerem"
+  // em vez de trocarem de forma seca.
+  useEffect(() => {
+    if (!switchCount) return undefined
+    const { body } = document
+    body.classList.add('palette-transition')
+    const timer = setTimeout(() => body.classList.remove('palette-transition'), 520)
+    return () => clearTimeout(timer)
+  }, [switchCount])
 
-  function setAppStyle(s) {
-    setStyle(s)
-  }
+  const applyPalette = useCallback((nextId) => {
+    if (!PALETTES.some((item) => item.id === nextId)) return
+    setPaletteId((current) => {
+      if (current === nextId) return current
+      setSwitchCount((count) => count + 1)
+      return nextId
+    })
+  }, [])
 
-  function setAppPalette(p) {
-    setPalette(p)
-  }
+  const cyclePalette = useCallback((direction = 1) => {
+    setPaletteId((current) => {
+      const index = PALETTES.findIndex((item) => item.id === current)
+      const next = (index + direction + PALETTES.length) % PALETTES.length
+      setSwitchCount((count) => count + 1)
+      return PALETTES[next].id
+    })
+  }, [])
 
-  return (
-    <ThemeContext.Provider value={{ theme, setTheme, toggleTheme, style, setAppStyle, palette, setAppPalette }}>
-      {children}
-    </ThemeContext.Provider>
+  const value = useMemo(
+    () => ({
+      style: APP_STYLE,
+      palettes: PALETTES,
+      palette,
+      paletteId: palette.id,
+      paletteColors: palette.colors,
+      tokens,
+      switchCount,
+      applyPalette,
+      cyclePalette
+    }),
+    [palette, tokens, switchCount, applyPalette, cyclePalette]
   )
+
+  return <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>
 }
 
 export function useTheme() {

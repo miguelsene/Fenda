@@ -3,10 +3,13 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Nex</title>
+    <title>Nex — 16BIT</title>
+    <meta name="description" content="Nex — chamadas em grupo, música e diversão com visual 16-bit." />
+    <meta name="theme-color" content="#1c0113" />
+    <link rel="icon" type="image/png" href="/nex.png" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Kalam:wght@400;700&family=Permanent+Marker&family=Press+Start+2P&family=Noto+Sans+JP:wght@400;700&family=Poppins:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&family=Silkscreen:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
     <script>
       // Se o usuário abriu uma rota direta como /room/ABC (sem #),
@@ -18,6 +21,15 @@
             var newUrl = location.origin + '/#' + p + (location.search || '') + (location.hash || '')
             location.replace(newUrl)
           }
+        } catch (e) {}
+      })()
+      // Marca o documento como 16-bit antes do React montar, evitando flash
+      // de estilos sem tema enquanto o ThemeProvider carrega.
+      (function(){
+        try {
+          document.documentElement.setAttribute('data-style', '16bit')
+          var saved = localStorage.getItem('nex.paletteId')
+          if (saved) document.documentElement.setAttribute('data-palette', saved)
         } catch (e) {}
       })()
     </script>

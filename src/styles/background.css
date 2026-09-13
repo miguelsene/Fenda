@@ -1,0 +1,134 @@
+/* ==========================================================================
+   NEX — 16BIT  ·  background.css
+   Camadas decorativas animadas que ficam atrás do conteúdo:
+   brilhos, "estrelas" pixeladas, sprites flutuantes e piso em grade.
+   ========================================================================== */
+
+.pixel-bg {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+  contain: strict;
+}
+
+/* ---------- Brilhos suaves nas cores da paleta ---------- */
+
+.pixel-bg__glow {
+  position: absolute;
+  width: 46vmax;
+  height: 46vmax;
+  border-radius: 50%;
+  filter: blur(2px);
+  opacity: 0.5;
+  mix-blend-mode: screen;
+}
+
+[data-tone='light'] .pixel-bg__glow {
+  mix-blend-mode: multiply;
+  opacity: 0.35;
+}
+
+.pixel-bg__glow--one {
+  top: -14vmax;
+  left: -10vmax;
+  background: radial-gradient(circle, var(--accent-glow) 0%, transparent 62%);
+  animation: float-y 13s ease-in-out infinite;
+}
+
+.pixel-bg__glow--two {
+  bottom: -18vmax;
+  right: -12vmax;
+  background: radial-gradient(circle, var(--bg-glow) 0%, transparent 60%);
+  animation: float-y 17s ease-in-out infinite reverse;
+}
+
+.pixel-bg__glow--three {
+  top: 34%;
+  left: 42%;
+  width: 30vmax;
+  height: 30vmax;
+  background: radial-gradient(circle, var(--accent-glow) 0%, transparent 68%);
+  animation: float-y 21s ease-in-out infinite;
+  opacity: 0.32;
+}
+
+/* ---------- Estrelas pixeladas ---------- */
+
+.pixel-bg__star {
+  position: absolute;
+  display: block;
+  background: var(--accent);
+  animation: twinkle 3.4s steps(4, end) infinite;
+}
+
+.pixel-bg__star--ink {
+  background: var(--ink);
+}
+
+/* ---------- Sprites flutuantes ---------- */
+
+.pixel-bg__sprite {
+  position: absolute;
+  display: block;
+  opacity: 0.22;
+  animation: float-y 9s ease-in-out infinite;
+}
+
+.pixel-bg__sprite svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  shape-rendering: crispEdges;
+}
+
+.pixel-bg__sprite--drift {
+  animation: drift-x 24s linear infinite alternate, float-y 7s ease-in-out infinite;
+  opacity: 0.16;
+}
+
+/* ---------- Piso em grade (perspectiva) ---------- */
+
+.pixel-bg__floor {
+  position: absolute;
+  left: -20%;
+  right: -20%;
+  bottom: 0;
+  height: 34vh;
+  background-image:
+    repeating-linear-gradient(
+      90deg,
+      var(--accent-glow) 0 2px,
+      transparent 2px 72px
+    ),
+    repeating-linear-gradient(
+      0deg,
+      var(--accent-glow) 0 2px,
+      transparent 2px 44px
+    );
+  transform: perspective(320px) rotateX(62deg);
+  transform-origin: bottom center;
+  opacity: 0.5;
+  animation: progress-scan 3.6s linear infinite;
+  mask-image: linear-gradient(180deg, transparent 0%, #000 65%);
+  -webkit-mask-image: linear-gradient(180deg, transparent 0%, #000 65%);
+}
+
+/* ---------- Flash ao trocar de paleta ---------- */
+
+.palette-flash {
+  position: fixed;
+  inset: 0;
+  z-index: 9;
+  pointer-events: none;
+  background: linear-gradient(
+    100deg,
+    transparent 0%,
+    var(--accent-glow) 42%,
+    var(--accent) 50%,
+    var(--accent-glow) 58%,
+    transparent 100%
+  );
+  animation: flash-wipe 0.7s ease-out both;
+}

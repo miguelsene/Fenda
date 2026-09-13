@@ -86,7 +86,7 @@ function RoomView({ code, profile }) {
   }
 
   async function handleShareLink() {
-    const url = `${window.location.origin}${window.location.pathname}#/room/${code}`
+    const url = `${window.location.origin}/#/room/${code}`
     try {
       await navigator.clipboard.writeText(url)
       setCopyFeedback('Link copiado!')

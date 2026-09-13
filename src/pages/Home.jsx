@@ -46,31 +46,33 @@ export default function Home() {
     else setForm((f) => ({ ...f, avatar: dataUrl }))
   }
 
-  function ensureProfileSaved() {
+  async function ensureProfileSaved() {
     if (!account) {
-      setGuestProfile({ name: guestName.trim() || 'Convidado', avatar: guestAvatar })
+      setGuestProfile({ name: (guestName || '').trim() || 'Convidado', avatar: guestAvatar })
+      // Espera um micro-tick para o contexto propagar antes de navegar
+      await new Promise((r) => setTimeout(r, 0))
     }
   }
 
-  function handleCreateRoom() {
-    if (!activeProfile && !guestName.trim()) {
-          alert('Digite um nome antes de criar a sala')
+  async function handleCreateRoom() {
+    if (!activeProfile && !(guestName || '').trim()) {
+      alert('Digite um nome antes de criar a sala')
       return
     }
-    ensureProfileSaved()
+    await ensureProfileSaved()
     const code = generateRoomCode()
     navigate(`/room/${code}`)
   }
 
-  function handleJoinRoom(e) {
+  async function handleJoinRoom(e) {
     e.preventDefault()
-    if (!activeProfile && !guestName.trim()) {
-          alert('Digite um nome antes de entrar na sala')
+    if (!activeProfile && !(guestName || '').trim()) {
+      alert('Digite um nome antes de entrar na sala')
       return
     }
     const code = normalizeRoomCode(joinCode)
     if (!code) return
-    ensureProfileSaved()
+    await ensureProfileSaved()
     navigate(`/room/${code}`)
   }
 

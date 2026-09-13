@@ -868,3 +868,34 @@ body { font-family: var(--font-main, 'Kalam', 'Comic Sans MS', cursive, sans-ser
   animation: spin 1s linear infinite;
 }
 @keyframes spin { to { transform: rotate(360deg); } }
+
+/* Mobile improvements */
+@media (max-width: 760px) {
+  .home-hero { padding: 8px 12px; }
+  .app-title { font-size: 2rem; }
+  .home-grid { gap: 12px; padding: 12px; }
+  .toon-panel.home-card { padding: 16px; }
+  .big-btn { font-size: 1rem; padding: 12px; }
+  .home-hero img { height: 64px; }
+
+  /* footer toolbar fixed on mobile for quick access */
+  .room-toolbar {
+    position: fixed;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: calc(100% - 28px);
+    max-width: 720px;
+    border-radius: 12px;
+    box-shadow: 8px 8px 0 rgba(0,0,0,0.12);
+    z-index: 90;
+  }
+
+  .chat-panel { display: none; }
+  .video-area { padding-bottom: 120px; }
+}
+
+/* Home layout polish */
+.home-hero { display:flex; align-items:center; justify-content:center; flex-direction:column; gap:8px; }
+.home-grid { align-items: start; }
+.home-card-links { align-items: center; }

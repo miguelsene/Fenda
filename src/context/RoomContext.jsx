@@ -6,6 +6,12 @@ import { rollDice } from '../lib/dice'
 // appId identifica seu app dentro da rede pública de sinalização usada
 // pelo trystero. Não é um servidor seu — é só um "namespace".
 const APP_ID = 'toonmeet-v1-ptbr'
+const ROOM_RELAY_URLS = [
+  'wss://tracker.openwebtorrent.com',
+  'wss://tracker.webtorrent.dev',
+  'wss://tracker.btorrent.xyz',
+  'wss://tracker.files.fm:7073/announce'
+]
 
 const RoomContext = createContext(null)
 
@@ -31,7 +37,14 @@ export function RoomProvider({ roomCode, profile, children }) {
   useEffect(() => {
     if (!roomCode) return
     setJoining(true)
-    const room = joinRoom({ appId: APP_ID }, `toonmeet-${roomCode}`)
+    const room = joinRoom(
+      {
+        appId: APP_ID,
+        relayUrls: ROOM_RELAY_URLS,
+        relayRedundancy: 2
+      },
+      `toonmeet-${roomCode}`
+    )
     roomRef.current = room
     // mark as joined locally once joinRoom returned
     setJoining(false)

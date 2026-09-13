@@ -9,13 +9,7 @@
    6) home / room -> estilos das páginas
    ========================================================================== */
 
-@import './styles/tokens.css';
-@import './styles/base.css';
-@import './styles/animations.css';
-@import './styles/background.css';
-@import './styles/components.css';
-@import './styles/home.css';
-@import './styles/room.css';
+/* Consolidated styles — external style modules removed for deployment stability */
 
 /* Estilo único do app: 16-bit. */
 :root[data-style='16bit'] {

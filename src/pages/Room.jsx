@@ -167,7 +167,7 @@ function RoomView({ code, profile }) {
       {/** Loading overlay while joining the room */}
       {joining && (
         <div className="room-loading-overlay">
-          <img src="/nex.png" alt="Nex" className="logo" onError={(e)=>{e.target.style.display='none'}} />
+          <img src="/nex.svg" alt="Nex" className="logo" onError={(e)=>{e.target.style.display='none'}} />
           <div className="room-loading-spinner" />
           <div style={{fontWeight:700}}>Entrando na sala...</div>
           <div className="muted-text">Aguarde enquanto conectamos você — pode demorar alguns segundos.</div>

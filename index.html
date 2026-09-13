@@ -6,7 +6,7 @@
     <title>Nex — 16BIT</title>
     <meta name="description" content="Nex — chamadas em grupo, música e diversão com visual 16-bit." />
     <meta name="theme-color" content="#1c0113" />
-    <link rel="icon" type="image/png" href="/nex.png" />
+    <link rel="icon" href="/nex.svg" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&family=Silkscreen:wght@400;700&display=swap" rel="stylesheet">
@@ -22,7 +22,7 @@
             location.replace(newUrl)
           }
         } catch (e) {}
-      })()
+      })();
       // Marca o documento como 16-bit antes do React montar, evitando flash
       // de estilos sem tema enquanto o ThemeProvider carrega.
       (function(){

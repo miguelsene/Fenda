@@ -98,7 +98,7 @@ export default function Home() {
   return (
     <div className="home-page">
         <div className="home-hero">
-          <img src="/nex.png" alt="Nex" style={{height:72, marginBottom:12}} onError={(e)=>{e.target.style.display='none'}} />
+          <img src="/nex.svg" alt="Nex" style={{height:72, marginBottom:12}} onError={(e)=>{e.target.style.display='none'}} />
           <h1 className="app-title">Nex</h1>
           <p className="app-subtitle">Chamadas em grupo, música e diversão — pronto para jogar.</p>
         </div>

@@ -46,6 +46,45 @@
   --font-main: 'Press Start 2P', monospace;
 }
 
+/* Palette variables (default 16bit palette) */
+:root {
+  --p0: #f3e7d7;
+  --p1: #f7d7cd;
+  --p2: #f8c7c9;
+  --p3: #e0c0c7;
+  --p4: #c7b9c5;
+}
+
+/* Map palette to semantic variables for easier use */
+:root {
+  --bg: var(--p0);
+  --paper: var(--p1);
+  --paper-soft: var(--p2);
+  --accent: var(--p3);
+  --ink: var(--p4);
+}
+
+/* Palette selector UI */
+.palette-selector {
+  position: fixed;
+  left: 12px;
+  top: 12px;
+  display: flex;
+  gap: 8px;
+  z-index: 200;
+}
+.palette-swatch {
+  display: flex;
+  gap: 4px;
+  padding: 6px;
+  border-radius: 8px;
+  background: rgba(255,255,255,0.06);
+  border: 2px solid transparent;
+  cursor: pointer;
+}
+.palette-swatch.selected { box-shadow: 0 0 0 3px rgba(0,0,0,0.12); border-color: rgba(0,0,0,0.08); }
+.swatch-dot { width: 18px; height: 18px; border-radius: 50%; display: inline-block; border: 1px solid rgba(0,0,0,0.12); }
+
 :root[data-style="neon"] {
   --accent: #39ff14;
   --paper: #02030a;

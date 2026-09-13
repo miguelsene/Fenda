@@ -12,9 +12,16 @@ export function ThemeProvider({ children }) {
   })
   const [style, setStyle] = useState(() => {
     try {
-      return localStorage.getItem('nex.style') || 'cartoon'
+      return localStorage.getItem('nex.style') || '16bit'
     } catch {
-      return 'cartoon'
+      return '16bit'
+    }
+  })
+  const [palette, setPalette] = useState(() => {
+    try {
+      return JSON.parse(localStorage.getItem('nex.palette')) || null
+    } catch {
+      return null
     }
   })
 
@@ -32,6 +39,18 @@ export function ThemeProvider({ children }) {
     document.documentElement.setAttribute('data-style', style)
   }, [style])
 
+  useEffect(() => {
+    try {
+      localStorage.setItem('nex.palette', JSON.stringify(palette))
+    } catch {}
+    if (palette && Array.isArray(palette)) {
+      // apply palette to CSS variables --p0..--p4
+      palette.forEach((c, i) => {
+        document.documentElement.style.setProperty(`--p${i}`, c)
+      })
+    }
+  }, [palette])
+
   function toggleTheme() {
     setTheme((t) => (t === 'light' ? 'dark' : 'light'))
   }
@@ -40,8 +59,12 @@ export function ThemeProvider({ children }) {
     setStyle(s)
   }
 
+  function setAppPalette(p) {
+    setPalette(p)
+  }
+
   return (
-    <ThemeContext.Provider value={{ theme, setTheme, toggleTheme, style, setAppStyle }}>
+    <ThemeContext.Provider value={{ theme, setTheme, toggleTheme, style, setAppStyle, palette, setAppPalette }}>
       {children}
     </ThemeContext.Provider>
   )
